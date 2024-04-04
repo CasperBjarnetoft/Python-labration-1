@@ -1,8 +1,10 @@
 import os
 import random
 
+# Array för att göra själva kortleken
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]*4
 
+# Funktion för att dela ut kort till datorn och spelare
 def deal(deck):
   hand = []
   for i in range(2):
@@ -15,6 +17,7 @@ def deal(deck):
      hand.append(card)
   return hand
 
+# Funktion för att hålla koll på hur många kort som spelaren och datorn har i handen
 def total(hand):
   total = 0
   for card in hand:
@@ -27,6 +30,7 @@ def total(hand):
       total += card
   return total
 
+# Funktion för att dela ut nytt kort antigen till spelare eller dator
 def hit(hand):
    card = deck.pop()
    if card == 11: card = "J"
@@ -35,7 +39,8 @@ def hit(hand):
    if card == 14: card = "A"
    hand.append(card)
    return hand
-  
+
+# Funktion för att kunna starta om spelet och spela flera rundor
 def play_again():
    again = input("Do you want to play again? (Y/N) : ")
    if again == "y":
@@ -47,16 +52,14 @@ def play_again():
         print("Bye!")
         exit()
 
+# Nollställer terminal vid nytt spel
 def clear():
    if os.name == 'nt':
       os.system('CLS')
    if os.name == 'posix':
       os.system('clear')
 
-def results(playerhand, dealerhand):
-   clear()
-   print (f"Dealer has {dealerhand} for total of {total(dealerhand)} \n You have {playerhand} for a total of {total(playerhand)}")
-
+# Funktion för att visa resultat efter spelad runda
 def score(playerhand, dealerhand):
    if total(playerhand) == 21:
       print(f"Congratulations, You got Blackjack\n You got {total(playerhand)} \n Dealer got {total(dealerhand)}")
@@ -71,7 +74,7 @@ def score(playerhand, dealerhand):
    elif total(dealerhand) < total(playerhand):
       print(f"You win!! \n You got {total(playerhand)} \n Dealer got {total(dealerhand)}")
     
-
+# Funktionen som köra själva spelet
 def game():
   choice = ""
   playerIn = True
@@ -80,10 +83,16 @@ def game():
   print(f"WELCOME TO BLACKJACK!\n")
   DealerHand = deal(deck)
   playerHand = deal(deck)
+  
+  # While loop som håller koll att spela är igång till användare klickar på q för att avsluta
   while choice !="q":
-     while playerIn or dealerIn:
+     
+     # while loop som håller koll om spelen vill ta ett nytt kort eller stanna
+     while playerIn:
       print (f"The dealer is showing {DealerHand[0]} AND X")
       print (f"You have {playerHand[0]}, {playerHand[1]} for a total of {total(playerHand)}")
+
+      # if funktion som håller kolla på de tra valen som användare har
       if playerIn:
         choice = input(f"Do you want to Hit, Stand or Quit: ")
         clear()
@@ -112,12 +121,13 @@ def game():
             
           score(playerHand, DealerHand)
           play_again()
-          
+
         elif choice == 'q':
            print ("Bye!")
            exit
         else:
            print(f"You need to click h, s OR q to continue")
 
+# if funktion som håller koll när själva spelet ska köras
 if __name__ == "__main__":
    game()
